@@ -72,13 +72,14 @@ All detailed notes are inside [`/technical-topics`](./technical-topics).
 
 ### 🧮 Problem Solving
 
-* [Arrays & Strings](./problem-solving/arrays.md)
+Will be added soon.
+<!-- * [Arrays & Strings](./problem-solving/arrays.md)
 * [Linked Lists](./problem-solving/linked-lists.md)
 * [Stacks & Queues](./problem-solving/stacks-queues.md)
 * [Trees & Graphs](./problem-solving/trees-graphs.md)
 * [Dynamic Programming](./problem-solving/dp.md)
 * [Math & Number Theory](./problem-solving/math.md)
-* [Patterns (Sliding Window, Two Pointers, etc.)](./problem-solving/patterns.md)
+* [Patterns (Sliding Window, Two Pointers, etc.)](./problem-solving/patterns.md) -->
 
 ---
 
@@ -116,7 +117,7 @@ Goal: **Consistency over intensity.**
 
 ## 🤝 Contributing
 
-This is primarily a personal learning log, but feel free to:
+Contributions are welcome! Whether it’s fixing typos, adding resources, or suggesting new topics, feel free to open a PR. Let's this repo be your first step in open source contributions!
 
 * Open issues for discussions or suggestions.
 * Share useful resources via PRs.
