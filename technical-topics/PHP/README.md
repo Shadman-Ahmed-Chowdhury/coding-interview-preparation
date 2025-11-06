@@ -9,6 +9,7 @@ This directory contains my personal notes and resources related to PHP programmi
     - [PHP Conditional Statements Example](#php-conditional-statements-example)
     - [PHP Return Declare and Tickable Statements](#php-return-declare-and-tickable-statements)
     - [How to include files in PHP](#how-to-include-files-in-php)
+    - [PHP Heredoc and Nowdoc](#php-heredoc-and-nowdoc)
 - [Working with Functions](#working-with-functions)
 - [Object-Oriented PHP](#object-oriented-php)
 - [PHP Best Practices](#php-best-practices)
@@ -117,6 +118,76 @@ $nav = ob_get_clean();
 echo $nav;
 ?>
 ```
+[Back To Top ⬆️](#contents)
+
+
+### PHP Heredoc and Nowdoc
+🧩 Heredoc and Nowdoc in PHP
+
+Heredoc (<<<) and Nowdoc (<<<' ') are used to define multi-line strings easily — especially useful for SQL queries or long text blocks.
+
+🔹 Heredoc
+
+Works like double quotes (" ") → variables and escape sequences are parsed.
+
+Starts with <<<IDENTIFIER and ends with the same IDENTIFIER (must be at the start of the line).
+
+Example:
+```php
+$userId = 5;
+
+$sql = <<<SQL
+SELECT id, name, email
+FROM users
+WHERE id = $userId
+AND status = 'active';
+SQL;
+
+echo $sql;
+```
+
+✅ Output:
+```
+SELECT id, name, email
+FROM users
+WHERE id = 5
+AND status = 'active';
+```
+🔹 Nowdoc
+
+Works like single quotes (' ') → variables are not parsed.
+
+Useful when you want the string to remain literal.
+
+Example:
+```php
+$userId = 5;
+
+$sql = <<<'SQL'
+SELECT id, name, email
+FROM users
+WHERE id = $userId
+AND status = 'active';
+SQL;
+
+echo $sql;
+```
+
+✅ Output:
+```
+SELECT id, name, email
+FROM users
+WHERE id = $userId
+AND status = 'active';
+```
+
+🧠 Summary
+Feature	Heredoc	Nowdoc
+Variable parsing	✅ Yes	❌ No
+Acts like	Double quotes	Single quotes
+Use case	Dynamic SQL / text	Static SQL / template
+
+
 [Back To Top ⬆️](#contents)
 
 ## Working with Functions
