@@ -4,12 +4,16 @@ This directory contains my personal notes and resources related to PHP programmi
 ## Contents
 
 - [Introduction to PHP](#introduction-to-php)
+    - [What is PHP?](#what-is-php)
 - [PHP Syntax and Basics](#php-syntax-and-basics)
     - [PHP Loops Example](#php-loops-example)
     - [PHP Conditional Statements Example](#php-conditional-statements-example)
     - [PHP Return Declare and Tickable Statements](#php-return-declare-and-tickable-statements)
     - [How to include files in PHP](#how-to-include-files-in-php)
     - [PHP Heredoc and Nowdoc](#php-heredoc-and-nowdoc)
+    - [PHP type hints for functions](#php-type-hints-for-functions)
+        - [The mixed type](#the-mixed-type)
+    - [PHP Strict Types](#php-strict-types)
 - [Working with Functions](#working-with-functions)
 - [Object-Oriented PHP](#object-oriented-php)
 - [PHP Best Practices](#php-best-practices)
@@ -17,7 +21,12 @@ This directory contains my personal notes and resources related to PHP programmi
 
 ## Introduction to PHP
 
+
+### What is PHP?
 PHP (Hypertext Preprocessor) is a popular server-side scripting language designed for web development. It is widely used for creating dynamic web pages and applications.
+
+Further read: https://www.phptutorial.net/php-tutorial/what-is-php/
+Video tutorial: https://www.youtube.com/watch?v=sVbEyFZKgqk
 
 [Back To Top ⬆️](#contents)
 
@@ -188,6 +197,69 @@ Acts like	Double quotes	Single quotes
 Use case	Dynamic SQL / text	Static SQL / template
 
 
+[Back To Top ⬆️](#contents)
+
+### PHP type hints for functions
+
+Type hints allow you to specify the expected data types of function arguments and return values. This helps catch errors early and improves code readability.
+
+#### Example of Type Hinting
+
+```php
+<?php
+function add(int $a, int $b): int {
+    return $a + $b;
+}
+
+$result = add(5, 10);
+echo $result; // Outputs: 15
+?>
+```
+
+#### The mixed type
+The `mixed` type hint indicates that a parameter or return value can be of any type. This is useful when a function needs to handle multiple types of data.
+The mixed type is equivalent to the following union type:
+
+> object|resource|array|string|int|float|bool|null
+
+```php
+<?php
+function processData(mixed $data): void {
+    if (is_array($data)) {
+        echo "Processing an array with " . count($data) . " elements.\n";
+    } elseif (is_string($data)) {
+        echo "Processing a string: $data\n";
+    }
+}
+```
+
+> Note:
+`To make a type nullable, prefix the type with a question mark (?type).`
+
+[Back To Top ⬆️](#contents)
+
+### PHP Strict Types
+To enable strict typing, you can use the declare(strict_types=1); directive at the beginning of the file like this:
+```php
+<?php
+
+declare(strict_types=1);
+
+function add(int $x, int $y)
+{
+    return $x + $y;
+}
+
+echo add(1.5, 2.5); 
+```
+By adding the strict typing directive to the file, the code will execute in strict mode. PHP enables the strict mode on a per-file basis.
+
+In the strict mode, PHP expects the values with the type to match the target types. If there’s a mismatch, PHP will issue an error.
+
+If you execute the script again, PHP will issue an error as follows:
+```
+Fatal error: Uncaught TypeError: Argument 1 passed to add() must be of the type 
+```
 [Back To Top ⬆️](#contents)
 
 ## Working with Functions
