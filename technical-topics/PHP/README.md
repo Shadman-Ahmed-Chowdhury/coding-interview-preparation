@@ -15,6 +15,7 @@ This directory contains my personal notes and resources related to PHP programmi
         - [The mixed type](#the-mixed-type)
     - [PHP Strict Types](#php-strict-types)
 - [Working with Functions](#working-with-functions)
+    - [Variadic Functions](#variadic-functions)
 - [Object-Oriented PHP](#object-oriented-php)
 - [PHP Best Practices](#php-best-practices)
 - [Common PHP Use Cases](#common-php-use-cases)
@@ -279,3 +280,19 @@ function add($a, $b) {
 $result = add(5, 10);
 echo $result; // Outputs: 15
 ?>
+
+```
+[Back To Top ⬆️](#contents)
+
+### Variadic Functions
+Variadic functions allow you to pass a variable number of arguments to a function. In PHP, you can define a variadic function using the `...` operator before the parameter name.
+
+```php
+<?php
+function sum(...$numbers) {
+    return array_sum($numbers);
+}
+```
+https://www.phptutorial.net/php-tutorial/php-variadic-functions/
+
+[Back To Top ⬆️](#contents)
