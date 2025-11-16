@@ -14,6 +14,7 @@ This directory contains my personal notes and resources related to PHP programmi
     - [PHP type hints for functions](#php-type-hints-for-functions)
         - [The mixed type](#the-mixed-type)
     - [PHP Strict Types](#php-strict-types)
+    - [PHP Static Variable](#php-static-variable)
 - [Working with Functions](#working-with-functions)
     - [Variadic Functions](#variadic-functions)
 - [Object-Oriented PHP](#object-oriented-php)
@@ -260,6 +261,109 @@ In the strict mode, PHP expects the values with the type to match the target typ
 If you execute the script again, PHP will issue an error as follows:
 ```
 Fatal error: Uncaught TypeError: Argument 1 passed to add() must be of the type 
+```
+[Back To Top ⬆️](#contents)
+
+### PHP Static Variable
+In PHP, a static variable is a variable that retains its value between function calls. When you declare a variable as static within a function, it is initialized only once and its value persists across multiple invocations of that function.
+
+```phpphp
+<?php
+function counter() {
+    static $count = 0; // Static variable
+    $count++;
+    return $count;
+}
+echo counter(); // Outputs: 1
+echo counter(); // Outputs: 2
+echo counter(); // Outputs: 3
+?>
+```
+[Back To Top ⬆️](#contents)
+
+### Anonymous, Clousure, Callable, Arrow Functions
+#### Anonymous Functions
+
+Functions without a name.
+Used when you need a quick, throwaway function.
+
+Example:
+```php
+$greet = function($name) {
+    return "Hello $name!";
+};
+
+echo $greet("Shadman");
+```
+
+#### Callable
+Anything in PHP that can be called like a function:
+- Function name as string
+- Method ['Class', 'method']
+- Object method [$object, 'method']
+- Anonymous function
+
+Examples:
+```php
+function sayHello() { return "Hello"; }
+$callable1 = 'sayHello';
+
+class Test {
+    public static function hi() { return "Hi"; }
+}
+$callable2 = ['Test', 'hi'];
+
+echo call_user_func($callable1);
+echo call_user_func($callable2);
+```
+
+#### Closures
+A special type of anonymous function that can capture variables from the parent scope using use.
+
+Example:
+```php
+$message = "Hello";
+
+$closure = function($name) use ($message) {
+    return "$message, $name!";
+};
+
+echo $closure("Shadman"); 
+```
+> Without use → $message would NOT be available inside.
+
+#### Callback Functions
+A function passed as an argument to another function.
+Example:
+```php
+function processArray($arr, $callback) {
+    $result = [];
+    foreach ($arr as $item) {
+        $result[] = $callback($item);
+    }
+    return $result;
+}
+$numbers = [1, 2, 3, 4];
+$squared = processArray($numbers, function($n) { return $n * $n; 
+});
+print_r($squared);
+```
+
+#### Arrow Functions (PHP 7.4+)
+A short-hand syntax for closures.
+Automatically capture variables from the parent scope (no use needed).
+
+Example:
+```php
+$message = "Hello";
+
+$greet = fn($name) => "$message, $name!";
+
+echo $greet("Shadman");
+
+Another example (array filtering):
+$nums = [1,2,3,4,5];
+$even = array_filter($nums, fn($n) => $n % 2 === 0);
 ```
 [Back To Top ⬆️](#contents)
 
