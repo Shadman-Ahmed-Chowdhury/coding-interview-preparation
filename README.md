@@ -37,6 +37,7 @@ All detailed notes are inside [`/technical-topics`](./technical-topics).
 
 ### 💻 Backend & Core Languages
 
+* [Backend Engineering](./technical-topics/backend-engineering/README.md)
 * [PHP](./technical-topics/PHP/README.md)
 * [Laravel](./technical-topics/laravel/README.md)
 * [Python](./technical-topics/python/README.md)
