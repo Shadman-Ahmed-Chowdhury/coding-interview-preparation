@@ -4,19 +4,31 @@ This directory contains my personal notes and resources related to PHP programmi
 ## Contents
 
 - [Introduction to PHP](#introduction-to-php)
+    - [What is PHP?](#what-is-php)
 - [PHP Syntax and Basics](#php-syntax-and-basics)
     - [PHP Loops Example](#php-loops-example)
     - [PHP Conditional Statements Example](#php-conditional-statements-example)
     - [PHP Return Declare and Tickable Statements](#php-return-declare-and-tickable-statements)
     - [How to include files in PHP](#how-to-include-files-in-php)
+    - [PHP Heredoc and Nowdoc](#php-heredoc-and-nowdoc)
+    - [PHP type hints for functions](#php-type-hints-for-functions)
+        - [The mixed type](#the-mixed-type)
+    - [PHP Strict Types](#php-strict-types)
+    - [PHP Static Variable](#php-static-variable)
 - [Working with Functions](#working-with-functions)
+    - [Variadic Functions](#variadic-functions)
 - [Object-Oriented PHP](#object-oriented-php)
 - [PHP Best Practices](#php-best-practices)
 - [Common PHP Use Cases](#common-php-use-cases)
 
 ## Introduction to PHP
 
+
+### What is PHP?
 PHP (Hypertext Preprocessor) is a popular server-side scripting language designed for web development. It is widely used for creating dynamic web pages and applications.
+
+Further read: https://www.phptutorial.net/php-tutorial/what-is-php/
+Video tutorial: https://www.youtube.com/watch?v=sVbEyFZKgqk
 
 [Back To Top ⬆️](#contents)
 
@@ -119,6 +131,242 @@ echo $nav;
 ```
 [Back To Top ⬆️](#contents)
 
+
+### PHP Heredoc and Nowdoc
+🧩 Heredoc and Nowdoc in PHP
+
+Heredoc (<<<) and Nowdoc (<<<' ') are used to define multi-line strings easily — especially useful for SQL queries or long text blocks.
+
+🔹 Heredoc
+
+Works like double quotes (" ") → variables and escape sequences are parsed.
+
+Starts with <<<IDENTIFIER and ends with the same IDENTIFIER (must be at the start of the line).
+
+Example:
+```php
+$userId = 5;
+
+$sql = <<<SQL
+SELECT id, name, email
+FROM users
+WHERE id = $userId
+AND status = 'active';
+SQL;
+
+echo $sql;
+```
+
+✅ Output:
+```
+SELECT id, name, email
+FROM users
+WHERE id = 5
+AND status = 'active';
+```
+🔹 Nowdoc
+
+Works like single quotes (' ') → variables are not parsed.
+
+Useful when you want the string to remain literal.
+
+Example:
+```php
+$userId = 5;
+
+$sql = <<<'SQL'
+SELECT id, name, email
+FROM users
+WHERE id = $userId
+AND status = 'active';
+SQL;
+
+echo $sql;
+```
+
+✅ Output:
+```
+SELECT id, name, email
+FROM users
+WHERE id = $userId
+AND status = 'active';
+```
+
+🧠 Summary
+Feature	Heredoc	Nowdoc
+Variable parsing	✅ Yes	❌ No
+Acts like	Double quotes	Single quotes
+Use case	Dynamic SQL / text	Static SQL / template
+
+
+[Back To Top ⬆️](#contents)
+
+### PHP type hints for functions
+
+Type hints allow you to specify the expected data types of function arguments and return values. This helps catch errors early and improves code readability.
+
+#### Example of Type Hinting
+
+```php
+<?php
+function add(int $a, int $b): int {
+    return $a + $b;
+}
+
+$result = add(5, 10);
+echo $result; // Outputs: 15
+?>
+```
+
+#### The mixed type
+The `mixed` type hint indicates that a parameter or return value can be of any type. This is useful when a function needs to handle multiple types of data.
+The mixed type is equivalent to the following union type:
+
+> object|resource|array|string|int|float|bool|null
+
+```php
+<?php
+function processData(mixed $data): void {
+    if (is_array($data)) {
+        echo "Processing an array with " . count($data) . " elements.\n";
+    } elseif (is_string($data)) {
+        echo "Processing a string: $data\n";
+    }
+}
+```
+
+> Note:
+`To make a type nullable, prefix the type with a question mark (?type).`
+
+[Back To Top ⬆️](#contents)
+
+### PHP Strict Types
+To enable strict typing, you can use the declare(strict_types=1); directive at the beginning of the file like this:
+```php
+<?php
+
+declare(strict_types=1);
+
+function add(int $x, int $y)
+{
+    return $x + $y;
+}
+
+echo add(1.5, 2.5); 
+```
+By adding the strict typing directive to the file, the code will execute in strict mode. PHP enables the strict mode on a per-file basis.
+
+In the strict mode, PHP expects the values with the type to match the target types. If there’s a mismatch, PHP will issue an error.
+
+If you execute the script again, PHP will issue an error as follows:
+```
+Fatal error: Uncaught TypeError: Argument 1 passed to add() must be of the type 
+```
+[Back To Top ⬆️](#contents)
+
+### PHP Static Variable
+In PHP, a static variable is a variable that retains its value between function calls. When you declare a variable as static within a function, it is initialized only once and its value persists across multiple invocations of that function.
+
+```phpphp
+<?php
+function counter() {
+    static $count = 0; // Static variable
+    $count++;
+    return $count;
+}
+echo counter(); // Outputs: 1
+echo counter(); // Outputs: 2
+echo counter(); // Outputs: 3
+?>
+```
+[Back To Top ⬆️](#contents)
+
+### Anonymous, Clousure, Callable, Arrow Functions
+#### Anonymous Functions
+
+Functions without a name.
+Used when you need a quick, throwaway function.
+
+Example:
+```php
+$greet = function($name) {
+    return "Hello $name!";
+};
+
+echo $greet("Shadman");
+```
+
+#### Callable
+Anything in PHP that can be called like a function:
+- Function name as string
+- Method ['Class', 'method']
+- Object method [$object, 'method']
+- Anonymous function
+
+Examples:
+```php
+function sayHello() { return "Hello"; }
+$callable1 = 'sayHello';
+
+class Test {
+    public static function hi() { return "Hi"; }
+}
+$callable2 = ['Test', 'hi'];
+
+echo call_user_func($callable1);
+echo call_user_func($callable2);
+```
+
+#### Closures
+A special type of anonymous function that can capture variables from the parent scope using use.
+
+Example:
+```php
+$message = "Hello";
+
+$closure = function($name) use ($message) {
+    return "$message, $name!";
+};
+
+echo $closure("Shadman"); 
+```
+> Without use → $message would NOT be available inside.
+
+#### Callback Functions
+A function passed as an argument to another function.
+Example:
+```php
+function processArray($arr, $callback) {
+    $result = [];
+    foreach ($arr as $item) {
+        $result[] = $callback($item);
+    }
+    return $result;
+}
+$numbers = [1, 2, 3, 4];
+$squared = processArray($numbers, function($n) { return $n * $n; 
+});
+print_r($squared);
+```
+
+#### Arrow Functions (PHP 7.4+)
+A short-hand syntax for closures.
+Automatically capture variables from the parent scope (no use needed).
+
+Example:
+```php
+$message = "Hello";
+
+$greet = fn($name) => "$message, $name!";
+
+echo $greet("Shadman");
+
+Another example (array filtering):
+$nums = [1,2,3,4,5];
+$even = array_filter($nums, fn($n) => $n % 2 === 0);
+```
+[Back To Top ⬆️](#contents)
+
 ## Working with Functions
 
 Functions are a fundamental building block in PHP. They allow you to encapsulate code for reusability and better organization. Here are some key points about working with functions in PHP:
@@ -136,3 +384,19 @@ function add($a, $b) {
 $result = add(5, 10);
 echo $result; // Outputs: 15
 ?>
+
+```
+[Back To Top ⬆️](#contents)
+
+### Variadic Functions
+Variadic functions allow you to pass a variable number of arguments to a function. In PHP, you can define a variadic function using the `...` operator before the parameter name.
+
+```php
+<?php
+function sum(...$numbers) {
+    return array_sum($numbers);
+}
+```
+https://www.phptutorial.net/php-tutorial/php-variadic-functions/
+
+[Back To Top ⬆️](#contents)
