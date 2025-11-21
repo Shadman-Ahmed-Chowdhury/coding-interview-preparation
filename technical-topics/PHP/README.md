@@ -15,6 +15,7 @@ This directory contains my personal notes and resources related to PHP programmi
         - [The mixed type](#the-mixed-type)
     - [PHP Strict Types](#php-strict-types)
     - [PHP Static Variable](#php-static-variable)
+    - [Anonymous, Closure, Callable, Arrow Functions](#anonymous-closure-callable-arrow-functions)
 - [Working with Functions](#working-with-functions)
     - [Variadic Functions](#variadic-functions)
 - [Object-Oriented PHP](#object-oriented-php)
@@ -281,7 +282,7 @@ echo counter(); // Outputs: 3
 ```
 [Back To Top ⬆️](#contents)
 
-### Anonymous, Clousure, Callable, Arrow Functions
+### Anonymous Clousure Callable Arrow Functions
 #### Anonymous Functions
 
 Functions without a name.
@@ -365,6 +366,33 @@ Another example (array filtering):
 $nums = [1,2,3,4,5];
 $even = array_filter($nums, fn($n) => $n % 2 === 0);
 ```
+[Back To Top ⬆️](#contents)
+
+### PHP Config Settings
+php.ini file is the main configuration file for PHP. It contains various settings that control the behavior of PHP at runtime.
+
+Some settings can be changed at runtime using the `ini_set()` function.
+
+Some example settings:
+- `display_errors`: Controls whether errors are displayed to the user.(Can be set in runtime)
+- `error_reporting`: Sets the level of error reporting. (Can be set in runtime)
+- `memory_limit`: Sets the maximum amount of memory a script can use.
+- `upload_max_filesize`: Sets the maximum size of uploaded files.
+- `post_max_size`: Sets the maximum size of POST data that PHP will accept.
+
+[Back To Top ⬆️](#contents) 
+
+### PHP Error Handling
+PHP provides several mechanisms for error handling, including:
+- `try-catch` blocks for handling exceptions.
+- Custom error handlers using `set_error_handler()`.
+- Error reporting levels using `error_reporting()`.
+
+Fatal errors, warnings, and notices are different levels of errors in PHP:
+- Fatal errors: These are critical errors that cause the script to terminate immediately. Examples include calling undefined functions or classes.
+- Warnings: These are non-fatal errors that do not stop script execution. Examples include including a non-existent file.
+- Notices: These are minor errors that indicate potential issues in the code, such as using an undefined variable.
+
 [Back To Top ⬆️](#contents)
 
 ## Working with Functions
