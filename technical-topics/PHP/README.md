@@ -3,24 +3,33 @@ This directory contains my personal notes and resources related to PHP programmi
 
 ## Contents
 
-- [Introduction to PHP](#introduction-to-php)
+- [PHP Technical Notes](#php-technical-notes)
+  - [Contents](#contents)
+  - [Introduction to PHP](#introduction-to-php)
     - [What is PHP?](#what-is-php)
-- [PHP Syntax and Basics](#php-syntax-and-basics)
+  - [PHP Syntax and Basics](#php-syntax-and-basics)
     - [PHP Loops Example](#php-loops-example)
     - [PHP Conditional Statements Example](#php-conditional-statements-example)
-    - [PHP Return Declare and Tickable Statements](#php-return-declare-and-tickable-statements)
+    - [PHP Return Declare and Tickable Statments](#php-return-declare-and-tickable-statments)
     - [How to include files in PHP](#how-to-include-files-in-php)
     - [PHP Heredoc and Nowdoc](#php-heredoc-and-nowdoc)
     - [PHP type hints for functions](#php-type-hints-for-functions)
-        - [The mixed type](#the-mixed-type)
+      - [Example of Type Hinting](#example-of-type-hinting)
+      - [The mixed type](#the-mixed-type)
     - [PHP Strict Types](#php-strict-types)
     - [PHP Static Variable](#php-static-variable)
-    - [Anonymous, Closure, Callable, Arrow Functions](#anonymous-closure-callable-arrow-functions)
+    - [PHP Config Settings](#php-config-settings)
+    - [PHP Error Handling](#php-error-handling)
 - [Working with Functions](#working-with-functions)
+    - [Anonymous, Clousure, Callable, Arrow Functions](#anonymous-clousure-callable-arrow-functions)
+      - [Anonymous Functions](#anonymous-functions)
+      - [Callable](#callable)
+      - [Closures](#closures)
+      - [Callback Functions](#callback-functions)
+      - [Arrow Functions (PHP 7.4+)](#arrow-functions-php-74)
+    - [PHP Date and Time](#php-date-and-time)
+  - [Working with Functions](#working-with-functions)
     - [Variadic Functions](#variadic-functions)
-- [Object-Oriented PHP](#object-oriented-php)
-- [PHP Best Practices](#php-best-practices)
-- [Common PHP Use Cases](#common-php-use-cases)
 
 ## Introduction to PHP
 
@@ -394,6 +403,26 @@ Fatal errors, warnings, and notices are different levels of errors in PHP:
 - Notices: These are minor errors that indicate potential issues in the code, such as using an undefined variable.
 
 [Back To Top ⬆️](#contents)
+
+### PHP Date and Time
+Getting the current time in PHP, we can use the `time()` function which returns the UNIX timestamp since Epoch (January 1 1970)
+```php
+<?php
+echo time();
+
+$current_time = time();
+echo date('Y-m-d g:ia', $current_time) . '<br>';
+
+$future_time = $current_time + (7 * 24 * 60 * 60); // 7 days later
+echo date('Y-m-d g:ia', $future_time);
+```
+Further read: 
+- https://www.phptutorial.net/php-tutorial/php-time/
+- https://www.phptutorial.net/php-tutorial/php-date/
+
+[Back To Top ⬆️](#contents)
+
+
 
 ## Working with Functions
 
