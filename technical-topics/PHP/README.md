@@ -18,6 +18,10 @@ This directory contains my personal notes and resources related to PHP programmi
       - [The mixed type](#the-mixed-type)
     - [PHP Strict Types](#php-strict-types)
     - [PHP Static Variable](#php-static-variable)
+    - [PHP Config Settings](#php-config-settings)
+    - [PHP Error Handling](#php-error-handling)
+    - [PHP Working with File System](#php-working-with-file-system)
+- [Working with Functions](#working-with-functions)
     - [Anonymous, Clousure, Callable, Arrow Functions](#anonymous-clousure-callable-arrow-functions)
       - [Anonymous Functions](#anonymous-functions)
       - [Callable](#callable)
@@ -288,7 +292,7 @@ echo counter(); // Outputs: 3
 ```
 [Back To Top ⬆️](#contents)
 
-### Anonymous, Clousure, Callable, Arrow Functions
+### Anonymous Clousure Callable Arrow Functions
 #### Anonymous Functions
 
 Functions without a name.
@@ -374,6 +378,33 @@ $even = array_filter($nums, fn($n) => $n % 2 === 0);
 ```
 [Back To Top ⬆️](#contents)
 
+### PHP Config Settings
+php.ini file is the main configuration file for PHP. It contains various settings that control the behavior of PHP at runtime.
+
+Some settings can be changed at runtime using the `ini_set()` function.
+
+Some example settings:
+- `display_errors`: Controls whether errors are displayed to the user.(Can be set in runtime)
+- `error_reporting`: Sets the level of error reporting. (Can be set in runtime)
+- `memory_limit`: Sets the maximum amount of memory a script can use.
+- `upload_max_filesize`: Sets the maximum size of uploaded files.
+- `post_max_size`: Sets the maximum size of POST data that PHP will accept.
+
+[Back To Top ⬆️](#contents) 
+
+### PHP Error Handling
+PHP provides several mechanisms for error handling, including:
+- `try-catch` blocks for handling exceptions.
+- Custom error handlers using `set_error_handler()`.
+- Error reporting levels using `error_reporting()`.
+
+Fatal errors, warnings, and notices are different levels of errors in PHP:
+- Fatal errors: These are critical errors that cause the script to terminate immediately. Examples include calling undefined functions or classes.
+- Warnings: These are non-fatal errors that do not stop script execution. Examples include including a non-existent file.
+- Notices: These are minor errors that indicate potential issues in the code, such as using an undefined variable.
+
+[Back To Top ⬆️](#contents)
+
 ### PHP Date and Time
 Getting the current time in PHP, we can use the `time()` function which returns the UNIX timestamp since Epoch (January 1 1970)
 ```php
@@ -393,6 +424,77 @@ Further read:
 [Back To Top ⬆️](#contents)
 
 
+### PHP Working with File System
+PHP provides various functions to work with the file system, including reading, writing, and manipulating files and directories.
+
+- List all files in a directory
+- Create, rename, and delete directories
+```php
+$dir = 'example_dir';
+if (!is_dir($dir)) {
+    mkdir($dir);
+    echo "Directory created.";
+} else {
+    echo "Directory already exists.";
+}
+```
+- Read a file
+```php
+$filename = 'example.txt';
+if (file_exists($filename)) {
+    $content = file_get_contents($filename);
+    echo $content;
+} else {
+    echo "File does not exist.";
+}
+```
+- Write to a file
+```php
+$filename = 'example.txt';
+$content = "Hello, World!";
+file_put_contents($filename, $content);
+echo "Content written to file.";
+```
+- Delete a file
+```php
+$filename = 'example.txt';
+if (file_exists($filename)) {
+    unlink($filename);
+    echo "File deleted.";
+} else {
+    echo "File does not exist.";
+}
+```
+- Get file contents
+```php
+$filename = 'example.txt';
+$content = file_get_contents($filename);
+echo $content;
+```
+- Get csv
+```php
+$filename = 'data.csv';
+if (($handle = fopen($filename, 'r')) !== FALSE) {   
+    while (($data = fgetcsv($handle, 1000, ',')) !== FALSE) {
+        print_r($data);
+    }
+    fclose($handle);
+}
+```
+- Put file contents
+```php
+$filename = 'example.txt';
+$content = "Hello, World!"; 
+file_put_contents($filename, $content);
+echo "Content written to file.";
+```
+- File close
+```php
+$filename = 'example.txt';
+$handle = fopen($filename, 'r');
+// Perform file operations here
+fclose($handle);   
+```
 
 ## Working with Functions
 
