@@ -20,6 +20,7 @@ This directory contains my personal notes and resources related to PHP programmi
     - [PHP Static Variable](#php-static-variable)
     - [PHP Config Settings](#php-config-settings)
     - [PHP Error Handling](#php-error-handling)
+    - [PHP Working with File System](#php-working-with-file-system)
 - [Working with Functions](#working-with-functions)
     - [Anonymous, Clousure, Callable, Arrow Functions](#anonymous-clousure-callable-arrow-functions)
       - [Anonymous Functions](#anonymous-functions)
@@ -423,6 +424,77 @@ Further read:
 [Back To Top ⬆️](#contents)
 
 
+### PHP Working with File System
+PHP provides various functions to work with the file system, including reading, writing, and manipulating files and directories.
+
+- List all files in a directory
+- Create, rename, and delete directories
+```php
+$dir = 'example_dir';
+if (!is_dir($dir)) {
+    mkdir($dir);
+    echo "Directory created.";
+} else {
+    echo "Directory already exists.";
+}
+```
+- Read a file
+```php
+$filename = 'example.txt';
+if (file_exists($filename)) {
+    $content = file_get_contents($filename);
+    echo $content;
+} else {
+    echo "File does not exist.";
+}
+```
+- Write to a file
+```php
+$filename = 'example.txt';
+$content = "Hello, World!";
+file_put_contents($filename, $content);
+echo "Content written to file.";
+```
+- Delete a file
+```php
+$filename = 'example.txt';
+if (file_exists($filename)) {
+    unlink($filename);
+    echo "File deleted.";
+} else {
+    echo "File does not exist.";
+}
+```
+- Get file contents
+```php
+$filename = 'example.txt';
+$content = file_get_contents($filename);
+echo $content;
+```
+- Get csv
+```php
+$filename = 'data.csv';
+if (($handle = fopen($filename, 'r')) !== FALSE) {   
+    while (($data = fgetcsv($handle, 1000, ',')) !== FALSE) {
+        print_r($data);
+    }
+    fclose($handle);
+}
+```
+- Put file contents
+```php
+$filename = 'example.txt';
+$content = "Hello, World!"; 
+file_put_contents($filename, $content);
+echo "Content written to file.";
+```
+- File close
+```php
+$filename = 'example.txt';
+$handle = fopen($filename, 'r');
+// Perform file operations here
+fclose($handle);   
+```
 
 ## Working with Functions
 
