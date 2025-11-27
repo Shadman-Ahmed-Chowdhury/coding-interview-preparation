@@ -185,3 +185,54 @@ CREATE TABLE Employees (
 ```
 [Back To Top ⬆️](#contents)
 
+## JOIN Queries
+- JOIN operations are used to combine rows from two or more tables based on a related column between them.
+
+| JOIN Type        | Description                                      |
+|------------------|--------------------------------------------------|
+| INNER JOIN       | Returns records that have matching values in both tables |
+| LEFT JOIN        | Returns all records from the left table and matched records from the right table |
+| RIGHT JOIN       | Returns all records from the right table and matched records from the left table |
+| FULL JOIN        | Returns all records when there is a match in either left or right table |
+| CROSS JOIN       | Returns the Cartesian product of both tables     |
+| Self JOIN        | Joins a table with itself to compare rows within the same table |
+
+Example of INNER JOIN:
+```sql
+SELECT Employees.FirstName, Employees.LastName, Departments.DepartmentName
+FROM Employees
+INNER JOIN Departments ON Employees.DepartmentID = Departments.DepartmentID;
+```
+
+Example of LEFT JOIN:
+```sql
+SELECT Employees.FirstName, Employees.LastName, Departments.DepartmentName
+FROM Employees
+LEFT JOIN Departments ON Employees.DepartmentID = Departments.DepartmentID;
+```
+
+[Back To Top ⬆️](#contents)
+
+## Subqueries
+- A subquery is a query nested inside another query. It can be used in SELECT, INSERT, UPDATE, or DELETE statements to perform operations based on the results of another query.
+
+Example of a Subquery:
+```sql
+SELECT FirstName, LastName
+FROM Employees
+WHERE DepartmentID IN (SELECT DepartmentID FROM Departments WHERE Location = 'New York');
+```
+
+[Back To Top ⬆️](#contents)
+
+### Corelated Subquery
+- A correlated subquery is a subquery that references columns from the outer query. It is executed once for each row processed by the outer query.
+
+Example of a Correlated Subquery:
+```sql
+SELECT E1.FirstName, E1.LastName
+FROM Employees E1
+WHERE E1.Salary > (SELECT AVG(E2.Salary) FROM Employees E2 WHERE E2.DepartmentID = E1.DepartmentID);
+```
+
+
