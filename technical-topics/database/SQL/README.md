@@ -1,7 +1,7 @@
 # SQL Learning Notes
 This directory contains my comprehensive notes and learning resources on SQL (Structured Query Language). It covers fundamental concepts, advanced topics, and practical examples to help you master SQL for database management and data manipulation.
 
-## 📚 Contents
+## Contents
 - [Before Getting Started](#before-getting-started)
 - [SQL Basics](#sql-basics)
     - [What is SQL?](#what-is-sql)
@@ -13,6 +13,19 @@ This directory contains my comprehensive notes and learning resources on SQL (St
     - [Common DML Commands](#common-dml-commands)
 - [AGGREGATE Queries](#aggregate-queries)
 - [Data Constraints](#data-constraints)
+- [JOIN Queries](#join-queries)
+- [Subqueries](#subqueries)
+    - [Corelated Subquery](#corelated-subquery)
+- [Advanced Functions](#advanced-functions)
+    - [String Functions](#string-functions)
+    - [Date and Time Functions](#date-and-time-functions)
+    - [Numeric Functions](#numeric-functions)
+    - [Conditional Functions](#conditional-functions)
+- [Views](#views)   
+    - [Creating Views](#creating-views)
+    - [Modifying Views](#modifying-views)
+    - [Dropping Views](#dropping-views)
+
 
 ## Before Getting Started
 ### Relation Databases
@@ -234,5 +247,103 @@ SELECT E1.FirstName, E1.LastName
 FROM Employees E1
 WHERE E1.Salary > (SELECT AVG(E2.Salary) FROM Employees E2 WHERE E2.DepartmentID = E1.DepartmentID);
 ```
+
+[Back To Top ⬆️](#contents)
+
+## Advanced Functions
+- SQL provides various advanced functions to perform complex operations on data.
+
+### String Functions
+| Function       | Description                                      |
+|----------------|--------------------------------------------------|
+| CONCAT         | Combines two or more strings into one            |
+| SUBSTRING      | Extracts a substring from a string                |
+| LENGTH         | Returns the length of a string                    |
+Example:
+```sql
+SELECT CONCAT(FirstName, ' ', LastName) AS FullName
+FROM Employees;
+```
+[Back To Top ⬆️](#contents)
+
+### Date and Time Functions
+
+| Function       | Description                                      |
+|----------------|--------------------------------------------------|
+| NOW()          | Returns the current date and time                 |
+| DATEADD        | Adds a specified time interval to a date          |
+| DATEDIFF       | Returns the difference between two dates          |
+| DATEPART      | Returns a specific part of a date (e.g., year, month, day) |
+| TIME          | Returns the time portion of a datetime value       |
+| TIMESTAMP    | Returns the timestamp portion of a datetime value  |
+Example:
+```sql
+SELECT FirstName, LastName, HireDate, DATEDIFF(NOW(), HireDate)
+AS DaysEmployed
+FROM Employees;
+``` 
+[Back To Top ⬆️](#contents)
+
+### Numeric Functions
+| Function       | Description                                      |
+|----------------|--------------------------------------------------|
+| ROUND          | Rounds a numeric value to a specified number of decimal places |
+| CEIL           | Rounds a numeric value up to the nearest integer  |
+| FLOOR          | Rounds a numeric value down to the nearest integer|
+| ABS            | Returns the absolute value of a numeric expression|
+Example:
+```sql
+SELECT FirstName, LastName, Salary, ROUND(Salary, 2) AS RoundedSalary
+FROM Employees;
+```
+[Back To Top ⬆️](#contents)
+
+### Conditional Functions
+| Function       | Description                                      |
+|----------------|--------------------------------------------------|
+| CASE           | Performs conditional logic in SQL queries        |
+| NULLIF         | Returns NULL if two expressions are equal        |
+| COALESCE       | Returns the first non-NULL expression from a list|
+Example:
+```sql
+SELECT FirstName, LastName,
+CASE
+    WHEN Salary < 50000 THEN 'Low'
+    WHEN Salary BETWEEN 50000 AND 100000 THEN 'Medium'
+    ELSE 'High'
+END AS SalaryRange
+FROM Employees;
+```
+[Back To Top ⬆️](#contents)
+
+
+## Views
+- A view is a virtual table that is based on the result set of a SQL query. It provides a way to simplify complex queries, and present data in a specific format.
+
+### Creating Views
+```sql
+CREATE VIEW EmployeeView AS
+SELECT FirstName, LastName, DepartmentID
+FROM Employees
+JOIN Departments ON Employees.DepartmentID = Departments.DepartmentID
+WHERE HireDate > '2020-01-01';
+```
+[Back To Top ⬆️](#contents)
+### Modifying Views
+```sql
+CREATE OR REPLACE VIEW EmployeeView AS
+SELECT FirstName, LastName, DepartmentID, Email
+FROM Employees
+JOIN Departments ON Employees.DepartmentID = Departments.DepartmentID
+WHERE HireDate > '2020-01-01';
+```
+[Back To Top ⬆️](#contents)
+
+### Dropping Views
+
+```sql
+DROP VIEW EmployeeView;
+```
+[Back To Top ⬆️](#contents) 
 
 
