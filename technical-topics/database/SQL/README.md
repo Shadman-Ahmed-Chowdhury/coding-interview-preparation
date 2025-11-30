@@ -25,6 +25,7 @@ This directory contains my comprehensive notes and learning resources on SQL (St
     - [Creating Views](#creating-views)
     - [Modifying Views](#modifying-views)
     - [Dropping Views](#dropping-views)
+- 
 
 
 ## Before Getting Started
@@ -346,4 +347,13 @@ DROP VIEW EmployeeView;
 ```
 [Back To Top ⬆️](#contents) 
 
+
+## Transactions
+- A transaction is a sequence of one or more SQL operations that are executed as a single unit of work. Transactions ensure data integrity and consistency by adhering to the ACID properties (Atomicity, Consistency, Isolation, Durability).
+
+### ACID Properties
+- **Atomicity**: Ensures that all operations within a transaction are completed successfully. If any operation fails, the entire transaction is rolled back.
+- **Consistency**: Ensures that a transaction brings the database from one valid state to another valid state, maintaining data integrity.
+- **Isolation**: Ensures that concurrent transactions do not interfere with each other, maintaining data consistency.
+- **Durability**: Ensures that once a transaction is committed, its changes are permanent and will survive system failures.
 
