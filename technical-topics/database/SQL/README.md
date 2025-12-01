@@ -25,7 +25,15 @@ This directory contains my comprehensive notes and learning resources on SQL (St
     - [Creating Views](#creating-views)
     - [Modifying Views](#modifying-views)
     - [Dropping Views](#dropping-views)
-- 
+- [Transactions](#transactions)
+    - [ACID Properties](#acid-properties)
+    - [BEGIN, COMMIT, ROLLBACK, SAVEPOINT](#begin-commit-rollback-savepoint)
+- [Indexes](#indexes)
+    - [Creating Indexes](#creating-indexes)
+    - [Dropping Indexes](#dropping-indexes)
+    - [Query Optimization Tips](#query-optimization-tips)
+    - [Managing Indexes](#managing-indexes)
+
 
 
 ## Before Getting Started
@@ -356,4 +364,45 @@ DROP VIEW EmployeeView;
 - **Consistency**: Ensures that a transaction brings the database from one valid state to another valid state, maintaining data integrity.
 - **Isolation**: Ensures that concurrent transactions do not interfere with each other, maintaining data consistency.
 - **Durability**: Ensures that once a transaction is committed, its changes are permanent and will survive system failures.
+
+### BEGIN, COMMIT, ROLLBACK, SAVEPOINT
+- **BEGIN**: Starts a new transaction. 
+- **COMMIT**: Saves all changes made during the transaction to the database.
+- **ROLLBACK**: Undoes all changes made during the transaction, reverting the database to its previous state.
+- **SAVEPOINT**: Sets a point within a transaction to which you can later roll back
+
+[Back To Top ⬆️](#contents)
+
+## Indexes
+- An index is a database object that improves the speed of data retrieval operations on a table at the cost of additional storage space and slower write operations. Indexes are created on one or more columns of a table.
+
+### Creating Indexes
+```sql
+CREATE INDEX idx_lastname ON Employees (LastName);
+```
+### Dropping Indexes
+```sql
+DROP INDEX idx_lastname;
+```
+[Back To Top ⬆️](#contents)
+
+### Query Optimization Tips
+- Use indexes on columns that are frequently used in WHERE clauses and JOIN conditions.
+- Avoid using SELECT *; instead, specify only the columns you need.
+- Use EXPLAIN to analyze query execution plans and identify performance bottlenecks.
+[Back To Top ⬆️](#contents)
+
+### Managing Indexes
+- Regularly monitor and maintain indexes to ensure optimal performance.
+- Rebuild or reorganize indexes as needed to reduce fragmentation.
+- Consider the trade-offs between read and write performance when creating indexes.
+```sql
+ALTER INDEX idx_lastname REBUILD;
+```
+
+```sql
+ALTER INDEX idx_lastname REORGANIZE;
+``` 
+
+[Back To Top ⬆️](#contents)
 
