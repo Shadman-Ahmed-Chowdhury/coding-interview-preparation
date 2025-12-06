@@ -28,11 +28,13 @@ This directory contains my comprehensive notes and learning resources on SQL (St
 - [Transactions](#transactions)
     - [ACID Properties](#acid-properties)
     - [BEGIN, COMMIT, ROLLBACK, SAVEPOINT](#begin-commit-rollback-savepoint)
+- [Query Optimization Tips](#query-optimization-tips)
 - [Indexes](#indexes)
     - [Creating Indexes](#creating-indexes)
     - [Dropping Indexes](#dropping-indexes)
     - [Query Optimization Tips](#query-optimization-tips)
     - [Managing Indexes](#managing-indexes)
+    - [Indexes Notes](#indexes-notes)
 
 
 
@@ -373,6 +375,16 @@ DROP VIEW EmployeeView;
 
 [Back To Top ⬆️](#contents)
 
+## Query Optimization Tips
+Some general optimization tips include:
+- Select only the columns you need instead of using SELECT *.
+- Use LIMIT to preview query results when appropriate.
+- Use wildcards(%) only at the end of a phrase.
+- Avoid select distinct unless necessary.
+- Run large queries during off-peak hours.
+
+[Back To Top ⬆️](#contents)
+
 ## Indexes
 - An index is a database object that improves the speed of data retrieval operations on a table at the cost of additional storage space and slower write operations. Indexes are created on one or more columns of a table.
 
@@ -403,6 +415,165 @@ ALTER INDEX idx_lastname REBUILD;
 ```sql
 ALTER INDEX idx_lastname REORGANIZE;
 ``` 
+
+### Indexes Notes:
+🔹 What is an Index?
+
+A database index is like a phonebook.
+Instead of checking every row (sequential scan), the DB uses a sorted structure to jump directly to the relevant data.
+
+👉 Goal: Faster searches, faster filtering, faster sorting.
+
+🔹 Types of Index Structures
+1. B-Tree Index (Most common)
+
+Default index type in almost all databases.
+Great for:
+Exact matches (WHERE id = 5)
+Range queries (WHERE amount > 100)
+Sorting operations (ORDER BY created_at)
+
+2. LSM Tree Index
+
+Mostly used in write-heavy systems (e.g., Cassandra, RocksDB).
+Writes = extremely fast
+Reads might be slower compared to B-Tree.
+
+🔹 Primary Key Index
+Every table’s PRIMARY KEY automatically gets a B-Tree index.
+Example:
+```sql
+CREATE TABLE employees (
+  id SERIAL PRIMARY KEY,
+  name TEXT
+);
+```
+The id column automatically has a B-Tree index.
+
+#### 📊 EXPLAIN ANALYZE Examples (Corrected Notes)
+✅ 1. Search using Primary Key
+```sql
+EXPLAIN ANALYZE 
+SELECT id FROM employees WHERE id = 200;
+```
+
+Expected result:
+- Index Only Scan (because PostgreSQL can get all required columns from the index itself)
+- Heap Fetches = 0 (no need to touch table pages)
+- Very fast!
+
+Example output:
+- Index Only Scan
+- Heap Fetches: 0
+- Execution time: 0.084 ms
+
+⚠️ 2. Using an Index Scan but reading non-indexed columns
+EXPLAIN ANALYZE
+SELECT name FROM employees WHERE id = 5000;
+
+
+Here:
+
+Filter uses indexed column (id)
+
+But name is not in the index, so PostgreSQL must go to the table (heap)
+
+Result:
+
+Index Scan on employees
+Execution time: ~2.5 ms
+
+
+🔸 This is slower than an Index Only Scan because heap lookups take time.
+
+❌ 3. Searching by a non-indexed column
+EXPLAIN ANALYZE
+SELECT id, name FROM employees WHERE name = 'SH';
+
+
+Since name is not indexed, PostgreSQL must scan the whole table.
+
+Because the table is huge, PostgreSQL chooses a Parallel Seq Scan.
+
+Result:
+
+Workers: 2
+Parallel Seq Scan
+Execution time: ~3113 ms
+
+
+🔥 This is VERY SLOW compared to index scans.
+
+❌ Worst-Case Pattern: LIKE %...%
+SELECT * FROM employees WHERE name LIKE '%sh%';
+
+
+PostgreSQL cannot use B-Tree index for patterns starting with %
+
+Full Sequential Scan → slowest possible
+
+🚀 Creating an Index to Speed Up Name Search
+CREATE INDEX idx_employee_name ON employees(name);
+
+
+Now run:
+
+EXPLAIN ANALYZE
+SELECT id, name FROM employees WHERE name = 'SH';
+
+
+Result:
+
+Index Scan using idx_employee_name
+Execution time: ~47 ms
+
+
+🔸 Dramatic improvement from 3113 ms → 47 ms
+This is the power of indexing correctly.
+
+📌 Additional Important Notes
+Index Only Scan vs Index Scan vs Seq Scan
+Type	When used	Fast?
+Index Only Scan	All requested columns exist inside index	⭐ Fastest
+Index Scan	Uses index but must fetch extra columns from heap	⭐⭐ Fast
+Seq Scan / Parallel Seq Scan	No useful index exists	❌ Slowest
+🔸 When NOT to Use Indexes
+
+Indexes slow down:
+
+INSERT
+
+UPDATE
+
+DELETE
+
+Because indexes must also be updated.
+
+Don't index:
+
+Very small tables
+
+Columns with low cardinality (e.g., gender = 'M/F')
+
+Columns frequently updated
+
+🔸 Index Best Practices
+
+Index columns used in WHERE and JOIN
+
+Avoid indexing frequently updated columns
+
+Composite indexes should follow filtering order:
+
+CREATE INDEX idx ON employees (department_id, name);
+
+
+For text search or LIKE '%word%':
+Use GIN index with pg_trgm:
+```sql
+CREATE EXTENSION pg_trgm;
+CREATE INDEX idx_trgm_name ON employees USING gin(name gin_trgm_ops);
+```
 
 [Back To Top ⬆️](#contents)
 
