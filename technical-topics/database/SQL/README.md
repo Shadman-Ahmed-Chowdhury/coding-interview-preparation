@@ -35,7 +35,8 @@ This directory contains my comprehensive notes and learning resources on SQL (St
     - [Query Optimization Tips](#query-optimization-tips)
     - [Managing Indexes](#managing-indexes)
     - [Indexes Notes](#indexes-notes)
-
+- [Normalization](#normalization)
+    - [Normal Forms](#normal-forms) 
 
 
 ## Before Getting Started
@@ -575,5 +576,42 @@ CREATE EXTENSION pg_trgm;
 CREATE INDEX idx_trgm_name ON employees USING gin(name gin_trgm_ops);
 ```
 
+[Back To Top ⬆️](#contents)
+
+## Normalization
+- Normalization is the process of organizing data in a database to reduce redundancy and improve data integrity. It involves dividing large tables into smaller, related tables and defining relationships between them.
+
+### Normal Forms
+- **First Normal Form (1NF)**: 
+Ensures that each column contains atomic values and each record is unique.
+- **Second Normal Form (2NF)**:
+Ensures that all non-key attributes are fully functionally dependent on the primary key.
+- **Third Normal Form (3NF)**:
+Ensures that all non-key attributes are not transitively dependent on the primary key.
+- **Boyce-Codd Normal Form (BCNF)**:
+A stricter version of 3NF that handles certain types of anomalies.
+
+Example of Normalization:
+Consider a table storing employee information:
+| EmployeeID | Name       | Department  | Manager    |
+|------------|------------|-------------|------------|
+| 1          | John Doe   | Sales       | Jane Smith |
+| 2          | Alice Brown| Marketing   | Bob Johnson |
+
+To normalize this table to 3NF, we can create two separate tables:
+
+**Employees Table**:
+| EmployeeID | Name       | DepartmentID |
+|------------|------------|--------------|
+| 1          | John Doe   | 1            |
+| 2          | Alice Brown| 2            |
+
+**Departments Table**:
+| DepartmentID | Department  | Manager    |
+|--------------|-------------|------------|
+| 1            | Sales       | Jane Smith |
+| 2            | Marketing   | Bob Johnson |
+
+This structure reduces redundancy and ensures data integrity.
 [Back To Top ⬆️](#contents)
 
